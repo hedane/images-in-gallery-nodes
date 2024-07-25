@@ -1,6 +1,6 @@
 # images-in-gallery-nodes
 
-An InvokeAI node for collecting all images on selected board in the gallery.
+An [InvokeAI](https://github.com/invoke-ai/InvokeAI) node for collecting all images on selected board in the gallery.
 
 When I was using the InvokeAI workflow, I found that there was not a node to read images from the gallery, so I wrote one. I suggest that the official team could consider building this feature into the InvokeAI.
 
