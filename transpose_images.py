@@ -10,12 +10,23 @@ from invokeai.invocation_api import (
 )
 
 
-@invocation("transpose_images", title="Transpose Images", tags=["image", "collection"], category="collections", version="1.0.0", use_cache=False)
+@invocation(
+    "transpose_images",
+    title="Transpose Images",
+    tags=["image", "collection"],
+    category="collections",
+    version="1.0.0",
+    use_cache=False,
+)
 class TransposeImagesInvocation(BaseInvocation):
     """Transpose images, e.g. 3x2: [1,2,3,4,5,6] to [1,4,2,5,3,6]"""
 
-    collection: list[ImageField] = InputField(description="The collection of image values")
-    batches: int = InputField(ge=1, description="Batches of images(N of MxN)", default=2)
+    collection: list[ImageField] = InputField(
+        description="The collection of image values"
+    )
+    batches: int = InputField(
+        ge=1, description="Batches of images(N of MxN)", default=2
+    )
 
     def invoke(self, context: InvocationContext) -> ImageCollectionOutput:
         collection: list[ImageField] = []
