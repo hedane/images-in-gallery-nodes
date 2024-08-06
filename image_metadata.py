@@ -11,7 +11,13 @@ from invokeai.invocation_api import (
 )
 
 
-@invocation("image_metadata", title="Image Metadata", tags=["image", "metadata"], category="primitives", version="1.0.0")
+@invocation(
+    "image_metadata",
+    title="Image Metadata",
+    tags=["image", "metadata"],
+    category="primitives",
+    version="1.0.0",
+)
 class ImageMetadataInvocation(BaseInvocation):
     """get metadata of image"""
 
