@@ -6,22 +6,21 @@ from .common import Box, calc_min_mask_box
 
 from invokeai.invocation_api import (
     BaseInvocation,
-    BaseInvocationOutput,
     ImageField,
     InputField,
     InvocationContext,
     invocation,
     invocation_output,
     ImageCategory,
+    ImageOutput,
     OutputField,
 )
 
 
 @invocation_output("mask_box_output")
-class MaskBoxOutput(BaseInvocationOutput):
+class MaskBoxOutput(ImageOutput):
     """Base class for MaskBox output"""
 
-    image: ImageField = OutputField(description="The output image")
     mask: ImageField = OutputField(description="The output mask")
     left: int = OutputField(
         description="The x coordinate of the bounding box's left side"
@@ -92,6 +91,8 @@ class MaskBoxInvocation(BaseInvocation):
 
         return MaskBoxOutput(
             image=ImageField(image_name=image_dto.image_name),
+            width=image_dto.width,
+            height=image_dto.height,
             mask=ImageField(image_name=mask_dto.image_name),
             left=result_box.left,
             top=result_box.top,
