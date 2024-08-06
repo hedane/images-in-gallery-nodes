@@ -170,6 +170,10 @@ class FillShapesInvocation(BaseInvocation):
                         box.top = y
                     if box.bottom < y:
                         box.bottom = y
+        if box.left > box.right:
+            box.left, box.right = box.right, box.left
+        if box.top > box.bottom:
+            box.top, box.bottom = box.bottom, box.top
         return box
 
 
