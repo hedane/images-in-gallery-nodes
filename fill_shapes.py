@@ -32,7 +32,7 @@ class FillShapesOutput(ImageOutput):
     title="Fill Shapes",
     tags=["image", "inpaint"],
     category="inpaint",
-    version="1.0.1",
+    version="1.0.2",
     use_cache=False,
 )
 class FillShapesInvocation(BaseInvocation):
@@ -68,8 +68,12 @@ class FillShapesInvocation(BaseInvocation):
         description="All-axis padding around the output mask in pixels",
     )
 
-    _mask_edge_size: int = 0
-    _mask_blur_radius: int = 4
+    mask_edge_size: int = InputField(
+        ge=0, default=4, description="The padding size of the mask edge"
+    )
+    mask_edge_blur: int = InputField(
+        ge=0, default=0, description="The padding amount of blur on the mask edge"
+    )
 
     def invoke(self, context: InvocationContext) -> FillShapesOutput:
         image = context.images.get_pil(self.image.image_name).convert("RGBA")
@@ -94,7 +98,9 @@ class FillShapesInvocation(BaseInvocation):
             image2_draw, mask2_draw = self.draw_shape(
                 image2_draw, mask2_draw, *draw_size
             )
-        mask2 = mask2.filter(ImageFilter.BoxBlur(radius=self._mask_blur_radius))
+
+        if self.mask_edge_blur > 0:
+            mask2 = mask2.filter(ImageFilter.BoxBlur(radius=self.mask_edge_blur))
 
         if mask:
             mask1 = mask.crop(draw_box.tuple())
@@ -145,7 +151,7 @@ class FillShapesInvocation(BaseInvocation):
         box = Box(x, y, x + w, y + h)
 
         draw.ellipse(box.tuple(), fill=self.color.tuple())
-        mask_draw.ellipse(box.pad(self._mask_edge_size).tuple(), fill=0)
+        mask_draw.ellipse(box.pad(self.mask_edge_size).tuple(), fill=0)
         return draw, mask_draw
 
     def calc_min_mask_box(self, mask: Image) -> "Box":
