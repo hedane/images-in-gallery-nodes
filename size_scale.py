@@ -15,25 +15,28 @@ from invokeai.invocation_api import (
 class SizeScaleOutput(BaseInvocationOutput):
     """Base class for SizeScale output"""
 
-    width: int = OutputField(description="The scaled width of the image (in pixels)")
-    height: int = OutputField(description="The scaled height of the image (in pixels)")
+    width: int = OutputField(description="The scaled width (in pixels)")
+    height: int = OutputField(description="The scaled height (in pixels)")
+    scale_factor: float = OutputField(description="The scaled factor")
 
 
 @invocation("size_scale", title="Size Scale", tags=["math"], version="1.0.0")
 class SizeScaleInvocation(BaseInvocation):
-    """Calculates the size with scale factor for image in 8 pixels"""
+    """Calculates the scaling size, ensuring to be multiple of 8 pixels"""
 
     width: int = InputField(ge=8, default=512, description="Source image width")
-    height: int = InputField(ge=8, default=768, description="Source image height")
-    scale_factor: float = InputField(
-        gt=0.0001, default=1.0, description="Amount to scale size"
+    height: int = InputField(ge=8, default=512, description="Source image height")
+    scale_to: int = InputField(
+        ge=128, default=768, description="Size of bigger side to scale"
     )
 
     def invoke(self, context: InvocationContext) -> SizeScaleOutput:
-        width = int(self.width * self.scale_factor)
-        height = int(self.height * self.scale_factor)
+        scale_factor = self.scale_to / max(self.width, self.height)
+
+        width = int(self.width * scale_factor)
+        height = int(self.height * scale_factor)
 
         width = (width // 8) * 8
         height = (height // 8) * 8
 
-        return SizeScaleOutput(width=width, height=height)
+        return SizeScaleOutput(width=width, height=height, scale_factor=scale_factor)
