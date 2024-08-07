@@ -22,18 +22,8 @@ class MaskBoxOutput(ImageOutput):
     """Base class for MaskBox output"""
 
     mask: ImageField = OutputField(description="The output mask")
-    left: int = OutputField(
-        description="The x coordinate of the bounding box's left side"
-    )
-    top: int = OutputField(
-        description="The y coordinate of the bounding box's top side"
-    )
-    right: int = OutputField(
-        description="The x coordinate of the bounding box's right side"
-    )
-    bottom: int = OutputField(
-        description="The y coordinate of the bounding box's bottom side"
-    )
+    x: int = OutputField(description="The x coordinate of the bounding box's left side")
+    y: int = OutputField(description="The y coordinate of the bounding box's top side")
 
 
 @invocation(
@@ -94,8 +84,6 @@ class MaskBoxInvocation(BaseInvocation):
             width=image_dto.width,
             height=image_dto.height,
             mask=ImageField(image_name=mask_dto.image_name),
-            left=result_box.left,
-            top=result_box.top,
-            right=result_box.right,
-            bottom=result_box.bottom,
+            x=result_box.left,
+            y=result_box.top,
         )
