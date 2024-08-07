@@ -84,8 +84,6 @@ class MaskBoxInvocation(BaseInvocation):
             width=image_dto.width,
             height=image_dto.height,
             mask=ImageField(image_name=mask_dto.image_name),
-            left=result_box.left,
-            top=result_box.top,
-            right=result_box.right,
-            bottom=result_box.bottom,
+            x=result_box.left,
+            y=result_box.top,
         )
