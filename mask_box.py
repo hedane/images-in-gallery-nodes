@@ -1,7 +1,6 @@
 # Copyright (c) 2024 hedane (https://github.com/hedane)
 
 from PIL import Image
-import random
 from .common import Box, calc_min_mask_box
 
 from invokeai.invocation_api import (

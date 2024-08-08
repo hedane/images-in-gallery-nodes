@@ -7,3 +7,5 @@ from .image_metadata import ImageMetadataInvocation
 from .mask_box import MaskBoxInvocation
 
 from .size_scale import SizeScaleInvocation
+
+from .mask_invert import MaskInvertInvocation
